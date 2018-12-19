@@ -74,6 +74,10 @@ def save_data(df, database_filename):
     
     df.to_sql('DisasterResponse', sqlite_engine, index=False)
 
+    print("===== TEST: rereading database file")
+    pd.read_sql_table('DisasterResponse', sqlite_engine)
+    print("=== SUCCESS ===")
+
 def split_categories_into_separate_numerical_columns(df_orig):
     """Transforms the column named 'categories' in dataframe df.
     It expects that each value is a string, consisting of parts separated by ';'.
