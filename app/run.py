@@ -73,6 +73,8 @@ def go():
     )
 
 def make_graph_distribution_of_message_genres():
+    """Make plotly graphobject fot distribution of message genres."""
+
     # extract data needed for visuals
     genre_counts = df.groupby('genre').count()['message']
     genre_names = list(genre_counts.index)
@@ -88,6 +90,8 @@ def make_graph_distribution_of_message_genres():
     }
 
 def make_graph_distribution_of_message_sizes():
+    """Make plotly graphobject fot distribution of message sizes."""
+
     msgsizes = df.message.str.len()
     return {
         'data': [Histogram(x=msgsizes)],
