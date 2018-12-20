@@ -94,16 +94,12 @@ def build_model():
     ])
 
     parameters = {
-        'vect__max_df': [0.75],
-        'tfidf__use_idf': [True],
-        #'clf__max_depth': [3]
-
-        #'vect__max_df': (0.5, 0.75, 1.0),
-        #'tfidf__use_idf': (True, False),
-        #'clf__max_depth': [3, None]
+        'vect__max_df': [0.3, 0.5, 0.75, 1.0],
+        'tfidf__use_idf': [True, False],
+        'clf__estimator__max_depth': [3, 10, None]
     }
 
-    return GridSearchCV(pipeline, param_grid=parameters, cv=2, verbose=99)
+    return GridSearchCV(pipeline, param_grid=parameters, verbose=99)
 
 @report_time
 def evaluate_model(model, X_test, Y_test, category_names):
