@@ -42,7 +42,6 @@ def index():
     
     graphs = [
         make_graph_distribution_of_message_genres(),
-        make_graph_distribution_of_message_genres(),
         make_graph_distribution_of_message_sizes(),
     ]
     
