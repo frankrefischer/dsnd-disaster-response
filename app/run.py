@@ -15,6 +15,8 @@ from sqlalchemy import create_engine
 app = Flask(__name__)
 
 def tokenize(text):
+    """Tokenize a text into a list of tokens."""
+
     tokens = word_tokenize(text)
     lemmatizer = WordNetLemmatizer()
 
@@ -33,10 +35,10 @@ df = pd.read_sql_table('DisasterResponse', engine)
 model = joblib.load("../models/DisasterResponse.pickle")
 
 
-# index webpage displays cool visuals and receives user input text for model
 @app.route('/')
 @app.route('/index')
 def index():
+    """Display cool visuals and receive user input text for model."""
     
     # extract data needed for visuals
     # TODO: Below is an example - modify to extract data for your own visuals
@@ -74,9 +76,10 @@ def index():
     return render_template('master.html', ids=ids, graphJSON=graphJSON)
 
 
-# web page that handles user query and displays model results
 @app.route('/go')
 def go():
+    """Handle user query and display model results."""
+
     # save user input in query
     query = request.args.get('query', '') 
 
