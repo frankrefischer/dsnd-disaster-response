@@ -7,7 +7,7 @@ from nltk.tokenize import word_tokenize
 
 from flask import Flask
 from flask import render_template, request, jsonify
-from plotly.graph_objs import Bar
+from plotly.graph_objs import Bar, Histogram
 from sklearn.externals import joblib
 from sqlalchemy import create_engine
 
@@ -38,32 +38,10 @@ model = joblib.load("../models/DisasterResponse.pickle")
 @app.route('/index')
 def index():
     
-    # extract data needed for visuals
-    # TODO: Below is an example - modify to extract data for your own visuals
-    genre_counts = df.groupby('genre').count()['message']
-    genre_names = list(genre_counts.index)
-    
-    # create visuals
-    # TODO: Below is an example - modify to create your own visuals
     graphs = [
-        {
-            'data': [
-                Bar(
-                    x=genre_names,
-                    y=genre_counts
-                )
-            ],
-
-            'layout': {
-                'title': 'Distribution of Message Genres',
-                'yaxis': {
-                    'title': "Count"
-                },
-                'xaxis': {
-                    'title': "Genre"
-                }
-            }
-        }
+        make_graph_distribution_of_message_genres(),
+        make_graph_distribution_of_message_genres(),
+        make_graph_distribution_of_message_sizes(),
     ]
     
     # encode plotly graphs in JSON
@@ -91,7 +69,32 @@ def go():
         classification_result=classification_results
     )
 
+def make_graph_distribution_of_message_genres():
+    # extract data needed for visuals
+    genre_counts = df.groupby('genre').count()['message']
+    genre_names = list(genre_counts.index)
+    
+    # create visuals    
+    return {
+            'data': [Bar(x=genre_names, y=genre_counts)],
+            'layout': {
+                'title': 'Distribution of Message Genres',
+                'yaxis': { 'title': "Count" },
+                'xaxis': { 'title': "Genre" },
+            }
+    }
 
+def make_graph_distribution_of_message_sizes():
+    msgsizes = df.message.str.len()
+    return {
+        'data': [Histogram(x=msgsizes)],
+        'layout': {
+            'title': 'Distribution of Message Sizes',
+            'yaxis': { 'title': 'Count' },
+            'xaxis': { 'title': 'log Size', 'type': 'log' },
+        }
+    }       
+    
 def main():
     app.run(host='0.0.0.0', port=3001, debug=True)
 
